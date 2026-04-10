@@ -2,8 +2,9 @@ package handler
 
 import (
 	"errors"
+	"github.com/ChernykhITMO/Wishlist-API/internal/auth/domain"
+	"github.com/ChernykhITMO/Wishlist-API/internal/auth/services"
 	"github.com/ChernykhITMO/Wishlist-API/internal/httpcommon"
-	"github.com/ChernykhITMO/Wishlist-API/internal/services"
 	"net/http"
 	"strings"
 )
@@ -47,8 +48,10 @@ func (h *Handler) Register(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		switch {
-		case errors.Is(err, services.ErrEmailAlreadyExists):
-			httpcommon.WriteError(w, http.StatusBadRequest, httpcommon.CodeInvalidRequest, "email already exists")
+		case errors.Is(err, domain.ErrInvalidRegistration):
+			httpcommon.WriteInvalidRequest(w)
+		case errors.Is(err, domain.ErrEmailAlreadyExists):
+			httpcommon.WriteConflict(w, "email already exists")
 		default:
 			httpcommon.WriteInternalError(w)
 		}
