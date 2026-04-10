@@ -1,0 +1,11 @@
+package services
+
+type RegisterInput struct {
+	Email    string
+	Password string
+}
+
+type LoginInput struct {
+	Email    string
+	Password string
+}
