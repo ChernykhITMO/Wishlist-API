@@ -15,7 +15,7 @@ func New(cost int) *Manager {
 }
 
 func (m *Manager) Hash(password string) (string, error) {
-	const op = "internal.platform.password.Manager.Hash"
+	const op = "services.platform.password.Manager.Hash"
 
 	hashed, err := bcrypt.GenerateFromPassword([]byte(password), m.cost)
 	if err != nil {
@@ -26,7 +26,7 @@ func (m *Manager) Hash(password string) (string, error) {
 }
 
 func (m *Manager) Compare(hash, password string) error {
-	const op = "internal.platform.password.Manager.Compare"
+	const op = "services.platform.password.Manager.Compare"
 
 	if err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password)); err != nil {
 		return fmt.Errorf("%s: compare hash: %w", op, err)
