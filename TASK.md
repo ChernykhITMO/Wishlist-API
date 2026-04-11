@@ -15,7 +15,7 @@
 * Git
 * Docker Compose
 * Go 1.21+ (набор библиотек на ваше усмотрение)
-* PostgreSQL
+  * PostgreSQL
 * Миграции для управления схемой БД (например, goose, golang-migrate)
 
 ---
