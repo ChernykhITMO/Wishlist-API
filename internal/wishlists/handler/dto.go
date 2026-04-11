@@ -13,7 +13,8 @@ type CreateWishlistInput struct {
 }
 
 type CreateWishlistOutput struct {
-	Token string `json:"token"`
+	ID    uuid.UUID `json:"id"`
+	Token uuid.UUID `json:"token"`
 }
 
 type UpdateWishlistInput struct {

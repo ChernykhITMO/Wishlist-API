@@ -22,6 +22,21 @@ func New(srv services.Service) *Handler {
 	}
 }
 
+// Create godoc
+// @Summary Create gift
+// @Tags gifts
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param wishlistId path string true "Wishlist ID"
+// @Param request body CreateGiftInput true "Gift payload"
+// @Success 201 {object} CreateGiftOutput
+// @Failure 400 {object} httpcommon.ErrorPayload
+// @Failure 401 {object} httpcommon.ErrorPayload
+// @Failure 404 {object} httpcommon.ErrorPayload
+// @Failure 409 {object} httpcommon.ErrorPayload
+// @Failure 500 {object} httpcommon.ErrorPayload
+// @Router /wishlists/{wishlistId}/gifts [post]
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	userID, ok := middleware.UserIDFromContext(ctx)
@@ -71,6 +86,17 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	httpcommon.WriteJSON(w, http.StatusCreated, CreateGiftOutput{ID: id})
 }
 
+// List godoc
+// @Summary List wishlist gifts
+// @Tags gifts
+// @Produce json
+// @Security BearerAuth
+// @Param wishlistId path string true "Wishlist ID"
+// @Success 200 {object} GiftsResponse
+// @Failure 400 {object} httpcommon.ErrorPayload
+// @Failure 401 {object} httpcommon.ErrorPayload
+// @Failure 500 {object} httpcommon.ErrorPayload
+// @Router /wishlists/{wishlistId}/gifts [get]
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	userID, ok := middleware.UserIDFromContext(ctx)
@@ -94,6 +120,19 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	httpcommon.WriteJSON(w, http.StatusOK, toGiftsResponse(gifts))
 }
 
+// Get godoc
+// @Summary Get gift by ID
+// @Tags gifts
+// @Produce json
+// @Security BearerAuth
+// @Param wishlistId path string true "Wishlist ID"
+// @Param giftId path string true "Gift ID"
+// @Success 200 {object} Gift
+// @Failure 400 {object} httpcommon.ErrorPayload
+// @Failure 401 {object} httpcommon.ErrorPayload
+// @Failure 404 {object} httpcommon.ErrorPayload
+// @Failure 500 {object} httpcommon.ErrorPayload
+// @Router /wishlists/{wishlistId}/gifts/{giftId} [get]
 func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	userID, ok := middleware.UserIDFromContext(ctx)
@@ -128,6 +167,21 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 	httpcommon.WriteJSON(w, http.StatusOK, toGiftResponse(gift))
 }
 
+// Update godoc
+// @Summary Update gift
+// @Tags gifts
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param wishlistId path string true "Wishlist ID"
+// @Param giftId path string true "Gift ID"
+// @Param request body UpdateGiftInput true "Gift payload"
+// @Success 200
+// @Failure 400 {object} httpcommon.ErrorPayload
+// @Failure 401 {object} httpcommon.ErrorPayload
+// @Failure 404 {object} httpcommon.ErrorPayload
+// @Failure 500 {object} httpcommon.ErrorPayload
+// @Router /wishlists/{wishlistId}/gifts/{giftId} [put]
 func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	userID, ok := middleware.UserIDFromContext(ctx)
@@ -182,6 +236,19 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 	httpcommon.WriteJSON(w, http.StatusOK, nil)
 }
 
+// Delete godoc
+// @Summary Delete gift
+// @Tags gifts
+// @Produce json
+// @Security BearerAuth
+// @Param wishlistId path string true "Wishlist ID"
+// @Param giftId path string true "Gift ID"
+// @Success 200
+// @Failure 400 {object} httpcommon.ErrorPayload
+// @Failure 401 {object} httpcommon.ErrorPayload
+// @Failure 404 {object} httpcommon.ErrorPayload
+// @Failure 500 {object} httpcommon.ErrorPayload
+// @Router /wishlists/{wishlistId}/gifts/{giftId} [delete]
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	userID, ok := middleware.UserIDFromContext(ctx)

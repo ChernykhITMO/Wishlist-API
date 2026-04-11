@@ -1,0 +1,683 @@
+basePath: /
+definitions:
+  github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorBody:
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+    type: object
+  github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload:
+    properties:
+      error:
+        $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorBody'
+    type: object
+  handler.CreateWishlistInput:
+    properties:
+      date:
+        type: string
+      description:
+        type: string
+      name:
+        type: string
+    type: object
+  handler.CreateWishlistOutput:
+    properties:
+      id:
+        type: string
+      token:
+        type: string
+    type: object
+  handler.PublicGiftDTO:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      link:
+        type: string
+      name:
+        type: string
+      priority:
+        type: integer
+    type: object
+  handler.PublicWishlistResponse:
+    properties:
+      dateEvent:
+        type: string
+      description:
+        type: string
+      gifts:
+        items:
+          $ref: '#/definitions/handler.PublicGiftDTO'
+        type: array
+      id:
+        type: string
+      nameEvent:
+        type: string
+    type: object
+  handler.UpdateWishlistInput:
+    properties:
+      date:
+        type: string
+      description:
+        type: string
+      name:
+        type: string
+    type: object
+  handler.Wishlist:
+    properties:
+      dateEvent:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      nameEvent:
+        type: string
+    type: object
+  handler.WishlistsResponse:
+    properties:
+      wishlists:
+        items:
+          $ref: '#/definitions/handler.Wishlist'
+        type: array
+    type: object
+  internal_auth_handler.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  internal_auth_handler.LoginResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  internal_auth_handler.RegisterRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  internal_auth_handler.RegisterResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  internal_booking_handler.CreateBookingRequest:
+    properties:
+      giftId:
+        type: string
+    type: object
+  internal_gifts_handler.CreateGiftInput:
+    properties:
+      description:
+        type: string
+      link:
+        type: string
+      name:
+        type: string
+      priority:
+        type: integer
+    type: object
+  internal_gifts_handler.CreateGiftOutput:
+    properties:
+      id:
+        type: string
+    type: object
+  internal_gifts_handler.Gift:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      link:
+        type: string
+      name:
+        type: string
+      priority:
+        type: integer
+      wishlistId:
+        type: string
+    type: object
+  internal_gifts_handler.GiftsResponse:
+    properties:
+      gifts:
+        items:
+          $ref: '#/definitions/internal_gifts_handler.Gift'
+        type: array
+    type: object
+  internal_gifts_handler.UpdateGiftInput:
+    properties:
+      description:
+        type: string
+      link:
+        type: string
+      name:
+        type: string
+      priority:
+        type: integer
+    type: object
+info:
+  contact: {}
+  description: REST API для создания и управления вишлистами.
+  title: Wishlist API
+  version: "1.0"
+paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Login payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_auth_handler.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_auth_handler.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+      summary: Login user
+      tags:
+      - auth
+  /register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Registration payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_auth_handler.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/internal_auth_handler.RegisterResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+      summary: Register user
+      tags:
+      - auth
+  /wishlists:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.WishlistsResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+      security:
+      - BearerAuth: []
+      summary: List user wishlists
+      tags:
+      - wishlists
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Wishlist payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.CreateWishlistInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/handler.CreateWishlistOutput'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+      security:
+      - BearerAuth: []
+      summary: Create wishlist
+      tags:
+      - wishlists
+  /wishlists/{id}:
+    delete:
+      parameters:
+      - description: Wishlist ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+      security:
+      - BearerAuth: []
+      summary: Delete wishlist
+      tags:
+      - wishlists
+    get:
+      parameters:
+      - description: Wishlist ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.Wishlist'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+      security:
+      - BearerAuth: []
+      summary: Get wishlist by ID
+      tags:
+      - wishlists
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Wishlist ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Wishlist payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.UpdateWishlistInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+      security:
+      - BearerAuth: []
+      summary: Update wishlist
+      tags:
+      - wishlists
+  /wishlists/{wishlistId}/gifts:
+    get:
+      parameters:
+      - description: Wishlist ID
+        in: path
+        name: wishlistId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_gifts_handler.GiftsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+      security:
+      - BearerAuth: []
+      summary: List wishlist gifts
+      tags:
+      - gifts
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Wishlist ID
+        in: path
+        name: wishlistId
+        required: true
+        type: string
+      - description: Gift payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_gifts_handler.CreateGiftInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/internal_gifts_handler.CreateGiftOutput'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+      security:
+      - BearerAuth: []
+      summary: Create gift
+      tags:
+      - gifts
+  /wishlists/{wishlistId}/gifts/{giftId}:
+    delete:
+      parameters:
+      - description: Wishlist ID
+        in: path
+        name: wishlistId
+        required: true
+        type: string
+      - description: Gift ID
+        in: path
+        name: giftId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+      security:
+      - BearerAuth: []
+      summary: Delete gift
+      tags:
+      - gifts
+    get:
+      parameters:
+      - description: Wishlist ID
+        in: path
+        name: wishlistId
+        required: true
+        type: string
+      - description: Gift ID
+        in: path
+        name: giftId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_gifts_handler.Gift'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+      security:
+      - BearerAuth: []
+      summary: Get gift by ID
+      tags:
+      - gifts
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Wishlist ID
+        in: path
+        name: wishlistId
+        required: true
+        type: string
+      - description: Gift ID
+        in: path
+        name: giftId
+        required: true
+        type: string
+      - description: Gift payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_gifts_handler.UpdateGiftInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+      security:
+      - BearerAuth: []
+      summary: Update gift
+      tags:
+      - gifts
+  /wishlists/public/{token}:
+    get:
+      parameters:
+      - description: Public token
+        in: path
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.PublicWishlistResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+      summary: Get public wishlist by token
+      tags:
+      - public
+  /wishlists/public/{token}/bookings:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Public token
+        in: path
+        name: token
+        required: true
+        type: string
+      - description: Booking payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_booking_handler.CreateBookingRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload'
+      summary: Create public gift booking
+      tags:
+      - public
+schemes:
+- http
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

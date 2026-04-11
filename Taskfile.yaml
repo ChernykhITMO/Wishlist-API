@@ -30,3 +30,7 @@ tasks:
   migrate:create:
     cmds:
       - goose -dir ./migrations create {{.CLI_ARGS}} sql
+
+  swagger:gen:
+    cmds:
+      - /Users/arseniychernykh/go/bin/swag init -g cmd/app/main.go -o docs --parseDependency --parseInternal

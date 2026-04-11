@@ -19,26 +19,37 @@ func New(srv services.Service) *Handler {
 	}
 }
 
-type registerRequest struct {
+type RegisterRequest struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
-type registerResponse struct {
+type RegisterResponse struct {
 	Token string `json:"token"`
 }
 
-type loginRequest struct {
+type LoginRequest struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
-type loginResponse struct {
+type LoginResponse struct {
 	Token string `json:"token"`
 }
 
+// Register godoc
+// @Summary Register user
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param request body RegisterRequest true "Registration payload"
+// @Success 201 {object} RegisterResponse
+// @Failure 400 {object} httpcommon.ErrorPayload
+// @Failure 409 {object} httpcommon.ErrorPayload
+// @Failure 500 {object} httpcommon.ErrorPayload
+// @Router /register [post]
 func (h *Handler) Register(w http.ResponseWriter, r *http.Request) {
-	var req registerRequest
+	var req RegisterRequest
 	ctx := r.Context()
 
 	if err := httpcommon.DecodeJSON(r, &req); err != nil {
@@ -67,11 +78,22 @@ func (h *Handler) Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	httpcommon.WriteJSON(w, http.StatusCreated, registerResponse{Token: token})
+	httpcommon.WriteJSON(w, http.StatusCreated, RegisterResponse{Token: token})
 }
 
+// Login godoc
+// @Summary Login user
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param request body LoginRequest true "Login payload"
+// @Success 200 {object} LoginResponse
+// @Failure 400 {object} httpcommon.ErrorPayload
+// @Failure 401 {object} httpcommon.ErrorPayload
+// @Failure 500 {object} httpcommon.ErrorPayload
+// @Router /login [post]
 func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
-	var req loginRequest
+	var req LoginRequest
 	ctx := r.Context()
 
 	if err := httpcommon.DecodeJSON(r, &req); err != nil {
@@ -97,5 +119,5 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	httpcommon.WriteJSON(w, http.StatusOK, loginResponse{Token: token})
+	httpcommon.WriteJSON(w, http.StatusOK, LoginResponse{Token: token})
 }

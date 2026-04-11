@@ -10,6 +10,14 @@ import (
 	"syscall"
 )
 
+// @title Wishlist API
+// @version 1.0
+// @description REST API для создания и управления вишлистами.
+// @BasePath /
+// @schemes http
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 func main() {
 	_ = godotenv.Load()
 

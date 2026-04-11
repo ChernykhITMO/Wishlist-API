@@ -19,6 +19,18 @@ func New(service *services.Service) *Handler {
 	}
 }
 
+// CreateBooking godoc
+// @Summary Create public gift booking
+// @Tags public
+// @Accept json
+// @Produce json
+// @Param token path string true "Public token"
+// @Param request body CreateBookingRequest true "Booking payload"
+// @Success 201
+// @Failure 400 {object} httpcommon.ErrorPayload
+// @Failure 409 {object} httpcommon.ErrorPayload
+// @Failure 500 {object} httpcommon.ErrorPayload
+// @Router /wishlists/public/{token}/bookings [post]
 func (h *Handler) CreateBooking(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	token, err := uuid.Parse(r.PathValue("token"))

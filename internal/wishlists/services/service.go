@@ -14,22 +14,27 @@ type Service struct {
 	wishlistRepo Repository
 }
 
+type CreateWishlistResult struct {
+	ID    uuid.UUID
+	Token uuid.UUID
+}
+
 func New(repo Repository) *Service {
 	return &Service{
 		wishlistRepo: repo,
 	}
 }
 
-func (s *Service) Create(ctx context.Context, input CreateWishlistInput) (string, error) {
+func (s *Service) Create(ctx context.Context, input CreateWishlistInput) (CreateWishlistResult, error) {
 	name := strings.TrimSpace(input.Name)
 	description := strings.TrimSpace(input.Description)
 	if name == "" || description == "" {
-		return "", domain.ErrInvalidWishlist
+		return CreateWishlistResult{}, domain.ErrInvalidWishlist
 	}
 
 	date, err := time.Parse(time.RFC3339, input.Date)
 	if err != nil {
-		return "", domain.ErrInvalidWishlist
+		return CreateWishlistResult{}, domain.ErrInvalidWishlist
 	}
 
 	wishlist := domain.Wishlist{
@@ -43,12 +48,15 @@ func (s *Service) Create(ctx context.Context, input CreateWishlistInput) (string
 
 	if err := s.wishlistRepo.Create(ctx, wishlist); err != nil {
 		if errors.Is(err, domain.ErrWishlistAlreadyExists) {
-			return "", domain.ErrWishlistAlreadyExists
+			return CreateWishlistResult{}, domain.ErrWishlistAlreadyExists
 		}
-		return "", err
+		return CreateWishlistResult{}, err
 	}
 
-	return wishlist.Token.String(), nil
+	return CreateWishlistResult{
+		ID:    wishlist.ID,
+		Token: wishlist.Token,
+	}, nil
 }
 
 func (s *Service) ListByUserID(ctx context.Context, userID uuid.UUID) ([]domain.Wishlist, error) {

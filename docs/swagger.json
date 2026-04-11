@@ -1,0 +1,1065 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "REST API для создания и управления вишлистами.",
+        "title": "Wishlist API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "basePath": "/",
+    "paths": {
+        "/login": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Login user",
+                "parameters": [
+                    {
+                        "description": "Login payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_auth_handler.LoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_auth_handler.LoginResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/register": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Register user",
+                "parameters": [
+                    {
+                        "description": "Registration payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_auth_handler.RegisterRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/internal_auth_handler.RegisterResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/wishlists": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "wishlists"
+                ],
+                "summary": "List user wishlists",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.WishlistsResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "wishlists"
+                ],
+                "summary": "Create wishlist",
+                "parameters": [
+                    {
+                        "description": "Wishlist payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.CreateWishlistInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/handler.CreateWishlistOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/wishlists/public/{token}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "public"
+                ],
+                "summary": "Get public wishlist by token",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Public token",
+                        "name": "token",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.PublicWishlistResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/wishlists/public/{token}/bookings": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "public"
+                ],
+                "summary": "Create public gift booking",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Public token",
+                        "name": "token",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Booking payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_booking_handler.CreateBookingRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/wishlists/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "wishlists"
+                ],
+                "summary": "Get wishlist by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Wishlist ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Wishlist"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "wishlists"
+                ],
+                "summary": "Update wishlist",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Wishlist ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Wishlist payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.UpdateWishlistInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "wishlists"
+                ],
+                "summary": "Delete wishlist",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Wishlist ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/wishlists/{wishlistId}/gifts": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "gifts"
+                ],
+                "summary": "List wishlist gifts",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Wishlist ID",
+                        "name": "wishlistId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_gifts_handler.GiftsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "gifts"
+                ],
+                "summary": "Create gift",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Wishlist ID",
+                        "name": "wishlistId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Gift payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_gifts_handler.CreateGiftInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/internal_gifts_handler.CreateGiftOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    }
+                }
+            }
+        },
+        "/wishlists/{wishlistId}/gifts/{giftId}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "gifts"
+                ],
+                "summary": "Get gift by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Wishlist ID",
+                        "name": "wishlistId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Gift ID",
+                        "name": "giftId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/internal_gifts_handler.Gift"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "gifts"
+                ],
+                "summary": "Update gift",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Wishlist ID",
+                        "name": "wishlistId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Gift ID",
+                        "name": "giftId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Gift payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_gifts_handler.UpdateGiftInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "gifts"
+                ],
+                "summary": "Delete gift",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Wishlist ID",
+                        "name": "wishlistId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Gift ID",
+                        "name": "giftId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorBody": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorPayload": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "$ref": "#/definitions/github_com_ChernykhITMO_Wishlist-API_internal_platform_httpcommon.ErrorBody"
+                }
+            }
+        },
+        "handler.CreateWishlistInput": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.CreateWishlistOutput": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.PublicGiftDTO": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "priority": {
+                    "type": "integer"
+                }
+            }
+        },
+        "handler.PublicWishlistResponse": {
+            "type": "object",
+            "properties": {
+                "dateEvent": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "gifts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/handler.PublicGiftDTO"
+                    }
+                },
+                "id": {
+                    "type": "string"
+                },
+                "nameEvent": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.UpdateWishlistInput": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.Wishlist": {
+            "type": "object",
+            "properties": {
+                "dateEvent": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "nameEvent": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.WishlistsResponse": {
+            "type": "object",
+            "properties": {
+                "wishlists": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/handler.Wishlist"
+                    }
+                }
+            }
+        },
+        "internal_auth_handler.LoginRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_auth_handler.LoginResponse": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_auth_handler.RegisterRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_auth_handler.RegisterResponse": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_booking_handler.CreateBookingRequest": {
+            "type": "object",
+            "properties": {
+                "giftId": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_gifts_handler.CreateGiftInput": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "priority": {
+                    "type": "integer"
+                }
+            }
+        },
+        "internal_gifts_handler.CreateGiftOutput": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_gifts_handler.Gift": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "priority": {
+                    "type": "integer"
+                },
+                "wishlistId": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_gifts_handler.GiftsResponse": {
+            "type": "object",
+            "properties": {
+                "gifts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/internal_gifts_handler.Gift"
+                    }
+                }
+            }
+        },
+        "internal_gifts_handler.UpdateGiftInput": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "priority": {
+                    "type": "integer"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
