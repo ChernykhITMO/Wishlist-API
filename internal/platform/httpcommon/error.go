@@ -6,19 +6,18 @@ const (
 	CodeInvalidRequest    = "INVALID_REQUEST"
 	CodeUnauthorized      = "UNAUTHORIZED"
 	CodeNotFound          = "NOT_FOUND"
-	CodeRoomNotFound      = "ROOM_NOT_FOUND"
+	CodeGiftNotFound      = "GIFT_NOT_FOUND"
 	CodeSlotNotFound      = "SLOT_NOT_FOUND"
 	CodeSlotAlreadyBooked = "SLOT_ALREADY_BOOKED"
 	CodeBookingNotFound   = "BOOKING_NOT_FOUND"
 	CodeForbidden         = "FORBIDDEN"
 	CodeConflict          = "CONFLICT"
-	CodeScheduleExists    = "SCHEDULE_EXISTS"
 	CodeInternalError     = "INTERNAL_ERROR"
 )
 
 const (
 	defaultInvalidRequestMessage = "invalid request"
-	defaultInternalErrorMessage  = "internal server error"
+	defaultInternalErrorMessage  = "services server error"
 	defaultUnauthorizedMessage   = "unauthorized"
 	defaultForbiddenMessage      = "forbidden"
 )
