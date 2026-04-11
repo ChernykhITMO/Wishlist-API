@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/ChernykhITMO/Wishlist-API/internal/auth/domain"
 	"github.com/ChernykhITMO/Wishlist-API/internal/auth/services"
-	"github.com/ChernykhITMO/Wishlist-API/internal/httpcommon"
+	"github.com/ChernykhITMO/Wishlist-API/internal/platform/httpcommon"
 	"net/http"
 	"strings"
 )
@@ -25,6 +25,15 @@ type registerRequest struct {
 }
 
 type registerResponse struct {
+	Token string `json:"token"`
+}
+
+type loginRequest struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type loginResponse struct {
 	Token string `json:"token"`
 }
 
@@ -59,4 +68,34 @@ func (h *Handler) Register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	httpcommon.WriteJSON(w, http.StatusCreated, registerResponse{Token: token})
+}
+
+func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
+	var req loginRequest
+	ctx := r.Context()
+
+	if err := httpcommon.DecodeJSON(r, &req); err != nil {
+		httpcommon.WriteInvalidRequest(w)
+		return
+	}
+	if strings.TrimSpace(req.Email) == "" || strings.TrimSpace(req.Password) == "" {
+		httpcommon.WriteInvalidRequest(w)
+		return
+	}
+
+	token, err := h.service.Login(ctx, services.LoginInput{
+		Email:    req.Email,
+		Password: req.Password,
+	})
+	if err != nil {
+		switch {
+		case errors.Is(err, domain.ErrInvalidCredentials):
+			httpcommon.WriteUnauthorized(w, "invalid credentials")
+		default:
+			httpcommon.WriteInternalError(w)
+		}
+		return
+	}
+
+	httpcommon.WriteJSON(w, http.StatusOK, loginResponse{Token: token})
 }

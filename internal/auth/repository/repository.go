@@ -1,11 +1,9 @@
-package postgres
+package repository
 
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/ChernykhITMO/Wishlist-API/internal/auth/domain"
-	"github.com/ChernykhITMO/Wishlist-API/internal/config"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -17,30 +15,8 @@ type repository struct {
 	pool *pgxpool.Pool
 }
 
-func New(ctx context.Context, cfg config.DBConfig) (*repository, error) {
-	const op = "internal.platform.postgres.Open"
-
-	poolConfig, err := pgxpool.ParseConfig(cfg.URL)
-	if err != nil {
-		return nil, fmt.Errorf("%s: parse config: %w", op, err)
-	}
-
-	poolConfig.MaxConns = cfg.MaxConns
-	poolConfig.MinConns = cfg.MinConns
-	poolConfig.MaxConnIdleTime = cfg.MaxConnIdleTime
-	poolConfig.MaxConnLifetime = cfg.MaxConnLifetime
-
-	pool, err := pgxpool.NewWithConfig(ctx, poolConfig)
-	if err != nil {
-		return nil, fmt.Errorf("%s: new pool: %w", op, err)
-	}
-
-	if err := pool.Ping(ctx); err != nil {
-		pool.Close()
-		return nil, fmt.Errorf("%s: ping: %w", op, err)
-	}
-
-	return &repository{pool: pool}, nil
+func New(pool *pgxpool.Pool) *repository {
+	return &repository{pool: pool}
 }
 
 func (r *repository) Create(ctx context.Context, id uuid.UUID, email, password string) error {

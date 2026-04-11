@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/ChernykhITMO/Wishlist-API/internal/auth/domain"
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5"
 	"net/mail"
 	"strings"
 )
@@ -67,6 +68,9 @@ func (s *Service) Login(ctx context.Context, input LoginInput) (string, error) {
 	}
 	id, pass, err := s.userRepository.GetByEmail(ctx, email)
 	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return "", domain.ErrInvalidCredentials
+		}
 		return "", fmt.Errorf("get user by email: %w", err)
 	}
 
@@ -76,7 +80,7 @@ func (s *Service) Login(ctx context.Context, input LoginInput) (string, error) {
 
 	token, err := s.tokenManager.Issue(id)
 	if err != nil {
-		return "", domain.ErrInvalidCredentials
+		return "", fmt.Errorf("issue token: %w", err)
 	}
 
 	return token, nil
