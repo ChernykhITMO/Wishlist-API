@@ -1,0 +1,32 @@
+version: '3'
+
+dotenv: ['.env']
+
+tasks:
+  lint:
+    cmds:
+      - golangci-lint run ./...
+
+  db:up:
+    cmds:
+      - docker-compose up -d
+
+  db:down:
+    cmds:
+      - docker-compose down
+
+  migrate:up:
+    cmds:
+      - goose -dir ./migrations postgres "$DB_URL" up
+
+  migrate:down:
+    cmds:
+      - goose -dir ./migrations postgres "$DB_URL" down
+
+  migrate:status:
+    cmds:
+      - goose -dir ./migrations postgres "$DB_URL" status
+
+  migrate:create:
+    cmds:
+      - goose -dir ./migrations create {{.CLI_ARGS}} sql
