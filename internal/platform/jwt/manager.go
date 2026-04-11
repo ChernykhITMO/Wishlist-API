@@ -29,7 +29,7 @@ func New(secret string, ttl time.Duration) *Manager {
 }
 
 func (m *Manager) Issue(userID uuid.UUID) (string, error) {
-	const op = "internal.platform.jwt.Manager.Issue"
+	const op = "services.platform.jwt.Manager.Issue"
 
 	now := time.Now().UTC()
 
@@ -50,7 +50,7 @@ func (m *Manager) Issue(userID uuid.UUID) (string, error) {
 }
 
 func (m *Manager) Parse(token string) (*Claims, error) {
-	const op = "internal.platform.jwt.Manager.Parse"
+	const op = "services.platform.jwt.Manager.Parse"
 
 	parsed, err := jwtlib.ParseWithClaims(token, &Claims{}, func(t *jwtlib.Token) (any, error) {
 		if _, ok := t.Method.(*jwtlib.SigningMethodHMAC); !ok {
