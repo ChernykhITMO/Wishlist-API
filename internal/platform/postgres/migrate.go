@@ -10,7 +10,7 @@ import (
 )
 
 func Migrate(ctx context.Context, dsn string, dir string) error {
-	const op = "internal.platform.postgres.Migrate"
+	const op = "services.platform.postgres.Migrate"
 
 	db, err := sql.Open("pgx", dsn)
 	if err != nil {
